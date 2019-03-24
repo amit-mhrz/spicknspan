@@ -27,8 +27,8 @@
             <div class="box box-success">
               <div class="box-body check_in_body">
                 <select class="select2" name="client">
-                  @foreach($clients as $client)
-                    <option value="{{$client->id}}">{{$client->name}}</option>
+                  @foreach($employees as $employee)
+                    <option value="{{$employee->id}}">{{$employee->name}}</option>
                   @endforeach
                 </select>
                 <div class="check_in_btn_container">

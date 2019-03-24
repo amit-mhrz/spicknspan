@@ -38,8 +38,12 @@
                   @endphp
                   <tr>
                     <td>{{$attendance_list->created_at->format('d-m-Y')}}</td>
-                    <td>{{$attendance_list->name}}</td>
-                    <td>{{$hours}}</td>
+                    @foreach($user_lists as $user_list)
+                        @if($user_list->id == $attendance_list->employee_id)
+                            <td>{{$user_list->name}}</td>
+                        @endif
+                    @endforeach
+                    <td>{{$hours}} Hours</td>
                     <td>{{$check_in->format('H:i:s')}} - {{$check_out->format('H:i:s')}}</td>
                   </tr>
                 @endforeach

@@ -217,13 +217,13 @@
         var newRow = $("<tr style='text-align: center;' role='row' class='odd'>");
         var cols = "";
         // cols += '<td><span class="chkRow"><input type="checkbox" name="roster_check"></span></td>';
-        cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger" value="Delete"></td>';
+        cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger" value="Remove"></td>';
         cols += '<td><select name="employee_id[]" class="form-control select2" style="width: 100%;" tabindex="-1" aria-hidden="true"><?php if ($employee->count()){?><option selected disabled>Select Employee</option><?php foreach($employee as $user){?><option value="<?php echo $user->id;?>"><?php echo $user->name;?></option><?php } } ?></select></td>';
         cols += '<td><select name="client_id[]" id="client_name" class="form-control select2" style="width: 100%;" tabindex="-1" aria-hidden="true"><?php if ($client->count()){?><option selected disabled>Select Client</option><?php foreach($client as $user){?><option value="<?php echo $user->id;?>"><?php echo $user->name;?></option><?php } } ?></select></td>';
-        cols += '<?php for ($i = 0; $i < 31; $i++){?><td><input name="start_time_<?php echo $j;?>_<?php echo $i;?>" type="text" id="start_time" class="timepicker txtTime" style="width:40px;"><br>to<br><input name="end_time_<?php echo $j;?>_<?php echo $i;?>" type="text" id="end_time" class="timepicker txtTime" style="width:40px;"></td><?php } ?>';
+        cols += '<?php for ($i = 1; $i <= 31; $i++){?><td><input name="start_time_<?php echo $i;?>" type="text" id="start_time" class="timepicker txtTime" style="width:40px;"><br>to<br><input name="end_time_<?php echo $i;?>" type="text" id="end_time" class="timepicker txtTime" style="width:40px;"></td><?php } ?>';
         newRow.append(cols);
         $("tbody.roster-list").append(newRow);
-    $('.timepicker').timepicker({ 'timeFormat': 'H:i' });
+        $('.timepicker').timepicker({ 'timeFormat': 'H:i' });
 
         counter++;
     });

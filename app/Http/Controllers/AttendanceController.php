@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Client;
+// use App\Client;
+use Illuminate\Support\Facades\Auth;
+use App\User;
 use App\Attendance;
 use Illuminate\Validation\Rule;
 
@@ -17,9 +19,10 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        $clients = Client::all();
-        
-        return view('backend.pages.check_in_out',compact('clients'));
+        $user_type = 'employee';
+        $employees = User::all()->where('user_type','=',$user_type);
+
+        return view('backend.pages.check_in_out',compact('employees'));
     }
 
     /**
@@ -87,22 +90,28 @@ class AttendanceController extends Controller
     {
         //
     }
+
     public function list()
     {
-        $attendance_lists = Attendance::select('attendances.id','clients.name','attendances.check_in','attendances.check_out','attendances.created_at')->join('clients','attendances.client_id','=','clients.id')->get();
-        return view('backend.pages.attendance_list',compact('attendance_lists'));
+        // $attendance_lists = Attendance::select('attendances.id','clients.name','attendances.check_in','attendances.check_out','attendances.created_at')->join('clients','attendances.client_id','=','clients.id')->get();
+        $user_lists = User::all();
+        $attendance_lists = Attendance::all();
+        return view('backend.pages.attendance_list',compact('attendance_lists', 'user_lists'));
     }
+
     public function checkin(Request $request)
     {
-        $client_id = $request->client;
-
+        $employee_id = $request->client;
+        $client_id = Auth::id();
+        // print_r($userId);
         //Check if already Logged In
-        $attendance_check = Attendance::where('client_id',$client_id)->whereDate('created_at',\Carbon\Carbon::today());
+        $attendance_check = Attendance::where('employee_id',$employee_id)->whereDate('created_at',\Carbon\Carbon::today());
         if(!$attendance_check->exists()){
             $carbon = now();
             $current_date_time = $carbon->toDateTimeString();
             $check_in = new Attendance;
             $check_in->client_id = $client_id;
+            $check_in->employee_id = $employee_id;
             $check_in->check_in = $current_date_time;
             $check_in->save();
         }
@@ -113,7 +122,8 @@ class AttendanceController extends Controller
     }
     public function checkout(Request $request)
     {
-        $client_id = $request->client;
+        // $client_id = $request->client;
+        $client_id = Auth::id();
         $carbon = now();
         $current_date_time = $carbon->toDateTimeString();
         $check_in = Attendance::where('client_id',$client_id)->whereDate('created_at',\Carbon\Carbon::today())->update(['check_out'=>$current_date_time]);

@@ -33,6 +33,8 @@
         </li>
         <li class="@if ($title === 'Roster') active @endif"><a href="{{route('roster.index')}}"><i class="fa fa-dashboard"></i> <span>Roster</span></a>
         </li>
+        <li class="@if ($title === 'Roster Variation') active @endif"><a href="{{route('roster_variation.index')}}"><i class="fa fa-dashboard"></i> <span>Roster Variation</span></a>
+        </li>
 
       @endcan
         <li class="@if ($title === 'Mail') active @endif"><a href="{{route('mail.index')}}"><i class="fa fa-dashboard"></i> <span>Mail</span></a>

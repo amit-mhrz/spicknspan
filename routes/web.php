@@ -41,5 +41,6 @@ Route::middleware(['auth'])->group(function () {
 		Route::post('/wages/{id}','WagesController@destroy')->name('wages.destroy');
 		Route::get('/roster','RosterController@index')->name('roster.index');
 		Route::post('/add_roster','RosterController@store')->name('roster.store');
+		Route::get('/roster-variation','RosterVariationController@index')->name('roster_variation.index');
 	});
 });
