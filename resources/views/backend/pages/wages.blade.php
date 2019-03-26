@@ -92,7 +92,7 @@
                           @endif
                       @endforeach
                       <td>{{$wage->hourly_rate}}</td>
-                      <form action="/wages/{{ $wage->id }}" method="POST">
+                      <form action="{{ url('/wages/').'/'.$wage->id}}" method="POST">
                         {{ csrf_field() }}
                         <input type="hidden" name="_method" value="POST">
                         <td><button>Delete</button></td>

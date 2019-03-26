@@ -26,7 +26,7 @@
               <table class="table table-hover">
                 <tr>
                   <th>Date</th>
-                  <th>Client</th>
+                  <th>Client Name</th>
                   <th>Total Hours</th>
                   <th>Timing</th>
                 </tr>
@@ -39,7 +39,7 @@
                   <tr>
                     <td>{{$attendance_list->created_at->format('d-m-Y')}}</td>
                     @foreach($user_lists as $user_list)
-                        @if($user_list->id == $attendance_list->employee_id)
+                        @if($user_list->id == $attendance_list->client_id)
                             <td>{{$user_list->name}}</td>
                         @endif
                     @endforeach

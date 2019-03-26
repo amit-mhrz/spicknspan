@@ -1,0 +1,4 @@
+[24-Mar-2019 12:39:20 UTC] PHP Warning:  Module 'mysqli' already loaded in Unknown on line 0
+[24-Mar-2019 23:39:20 Australia/Melbourne] PHP Parse error:  syntax error, unexpected '=' in /home/thewitchesdrawer/public_html/project/sns/vendor/laravel/framework/src/Illuminate/Support/Arr.php on line 380
+[24-Mar-2019 12:43:23 UTC] PHP Warning:  Module 'mysqli' already loaded in Unknown on line 0
+[24-Mar-2019 23:43:23 Australia/Melbourne] PHP Parse error:  syntax error, unexpected '=' in /home/thewitchesdrawer/public_html/project/sns/vendor/laravel/framework/src/Illuminate/Support/Arr.php on line 380

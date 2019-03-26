@@ -19,10 +19,10 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        $user_type = 'employee';
-        $employees = User::all()->where('user_type','=',$user_type);
+        $user_type = 'client';
+        $clients = User::all()->where('user_type','=',$user_type);
 
-        return view('backend.pages.check_in_out',compact('employees'));
+        return view('backend.pages.check_in_out',compact('clients'));
     }
 
     /**
@@ -101,9 +101,8 @@ class AttendanceController extends Controller
 
     public function checkin(Request $request)
     {
-        $employee_id = $request->client;
-        $client_id = Auth::id();
-        // print_r($userId);
+        $client_id = $request->client;
+        $employee_id = Auth::id();
         //Check if already Logged In
         $attendance_check = Attendance::where('employee_id',$employee_id)->whereDate('created_at',\Carbon\Carbon::today());
         if(!$attendance_check->exists()){
@@ -118,17 +117,19 @@ class AttendanceController extends Controller
         else{
             return  redirect()->back()->withErrors('Client Already Logged In for Today');
         }
-        return redirect()->back()->with('message', 'Client Logged in Successfully');
+        return redirect()->back()->with('message', 'Client Logged In Successfully');
     }
+    
     public function checkout(Request $request)
     {
-        // $client_id = $request->client;
-        $client_id = Auth::id();
+        $client_id = $request->client;
+        $employee_id = Auth::id();
         $carbon = now();
         $current_date_time = $carbon->toDateTimeString();
-        $check_in = Attendance::where('client_id',$client_id)->whereDate('created_at',\Carbon\Carbon::today())->update(['check_out'=>$current_date_time]);
+        $check_in = Attendance::where('client_id',$client_id)->where('employee_id',$employee_id)->whereDate('created_at',\Carbon\Carbon::today())->update(['check_out'=>$current_date_time]);
+        // print_r($employee_id);
         
-        return redirect()->back();
+        return redirect()->back()->with('message', 'Client Logged Out Successfully');
     }
 
 }

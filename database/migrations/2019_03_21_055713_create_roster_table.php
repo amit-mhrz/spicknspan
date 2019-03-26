@@ -17,9 +17,10 @@ class CreateRosterTable extends Migration
             $table->bigIncrements('id');
             $table->integer('employee_id');
             $table->integer('client_id');
-            $table->date('full_date');
-            $table->time('start_time');
-            $table->time('end_time');
+            $table->date('full_date')->nullable();
+            $table->time('start_time')->nullable();
+            $table->time('end_time')->nullable();
+            $table->time('total_hours')->nullable();
             $table->timestamps();
         });
     }

@@ -66,13 +66,23 @@ class RosterController extends Controller
         foreach ($arr_employee_id as $emp_id) {
 
             for ($i = 1; $i <= 31; $i++) {
+                $start_time    = $request['start_time_'.$i];
+                $end_time      = $request['end_time_'.$i];
+
+                $full_date      =  $request['full_date'].'-'.$i;
+                $timeIn         = \Carbon\Carbon::parse($start_time);
+                $timeOut        = \Carbon\Carbon::parse($end_time);
+                $diffInHours    = round($timeOut->diffInMinutes($timeIn) / 60);
+                // print_r($diffInHours);
+                
                 $roster_arr = [
                 'employee_id'   => $emp_id,
                 'client_id'     => $arr_client_id[$j],
                 $full_date      =  $request['full_date'],
                 'full_date'     => $full_date.'-'.$i,
                 'start_time'    => $request['start_time_'.$i],
-                'end_time'      => $request['end_time_'.$i]
+                'end_time'      => $request['end_time_'.$i],
+                'total_hours'   => $diffInHours
             ];
                 // print_r( $roster_arr);
                 Roster::create( $roster_arr);

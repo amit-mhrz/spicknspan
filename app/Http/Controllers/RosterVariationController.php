@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use App\Attendance;
+use App\Roster;
+use App\User;
 use Illuminate\Http\Request;
 
 class RosterVariationController extends Controller
@@ -13,7 +17,10 @@ class RosterVariationController extends Controller
      */
     public function index()
     {
-        return view('backend.pages.roster_variation');
+        $user_lists   = User::all();
+        $roster_lists = Roster::all();
+        $variations   = DB::table('attendances')->where('attendances.status', '=', 2)->get();
+        return view('backend.pages.roster_variation',compact('variations', 'roster_lists', 'user_lists'));
     }
 
     /**
