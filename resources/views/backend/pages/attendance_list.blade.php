@@ -3,7 +3,7 @@
 @section('content')
 
     <!-- Main content -->
-    <section class="content" style="padding-top: 50px;">
+    <section class="content attendance_history" style="padding-top: 50px;">
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
@@ -64,14 +64,18 @@
     </section>
     <!-- /.content -->
 
-    <section class="content" style="padding-top: 50px;">
+    <section class="content location_history" style="padding-top: 50px;">
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">Location History</h3>
-                <div class="box-body table-responsive no-padding">
-                  <div id="map"></div>
+                <div class="box-body table-responsive no-padding new_padding">
+                  <div id="mapid"></div>
+                  <?php
+                      $map_lat = $attendance_list->latitude;
+                      $map_long = $attendance_list->longitude;
+                      ?>
                 </div>
             </div>
           </div>
@@ -95,31 +99,26 @@
       }
   </script>
 
+  <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
   <script type="text/javascript">
-  var map;
-  function initMap() {
-  var mapCenter = new google.maps.LatLng(47.6145, -122.3418); //Google map Coordinates
-  map = new google.maps.Map($("#map")[0], {
-      center: mapCenter,
-      zoom: 8
-      });
-  }
 
-  $("#find_btn").click(function (){
-    if ("geolocation" in navigator){
-        navigator.geolocation.getCurrentPosition(function(position){ 
-            infoWindow = new google.maps.InfoWindow({map: map});
-            var pos = {lat: position.coords.latitude, lng: position.coords.longitude};
-            infoWindow.setPosition(pos);
-            infoWindow.setContent("Found your location <br />Lat : "+position.coords.latitude+" </br>Lang :"+ position.coords.longitude);
-            map.panTo(pos);
-          });
-      }else{
-        console.log("Browser doesn't support geolocation!");
-    }
-  });
+      var geoCoords = '[' + <?php echo $map_lat;?> + ', ' + <?php echo $map_long;?> + ']';
+      var map = L.map('mapid', {
+      center: JSON.parse(geoCoords),
+      zoom: 14
+      });
+      var marker = L.marker(JSON.parse(geoCoords)).addTo(map);
+      marker.bindPopup("<b>You are Here</b>").openPopup();
+      map.scrollWheelZoom.disable();
+
+      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYW1pdC1tYWhhcnhhbiIsImEiOiJjanJ1cGZxZ3UwNnhsNGFsNTAzcWtsanpsIn0.tnq36qhYA87WJb2nR7_KIw', {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox.streets',
+      accessToken: 'pk.eyJ1IjoiYW1pdC1tYWhhcnhhbiIsImEiOiJjanRwcjQwbWQwNnljM3lsbDlkcmFlNWVwIn0.BZXR3VF6Xdn7E1OLQaYRiw'
+      }).addTo(map);
+
   </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
 @endpush
      
 
