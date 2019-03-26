@@ -102,6 +102,14 @@ class AttendanceController extends Controller
 
     public function checkin(Request $request)
     {
+          //get user location
+          $user_ip = getenv('REMOTE_ADDR');
+          $geo = unserialize(file_get_contents("http://www.geoplugin.net/php.gp?ip=$user_ip"));
+          // $current_city = $geo["geoplugin_timezone"];
+          $latitude = $geo["geoplugin_latitude"];
+          $longitude = $geo["geoplugin_longitude"];
+          $location = $latitude.', '. $longitude;
+
         $client_id = $request->client;
         $employee_id = Auth::id();
         //Check if already Logged In
@@ -113,6 +121,7 @@ class AttendanceController extends Controller
             $check_in->client_id = $client_id;
             $check_in->employee_id = $employee_id;
             $check_in->check_in = $current_date_time;
+            $check_in->check_in_location = $location;
             $check_in->save();
         }
         else{
@@ -123,11 +132,19 @@ class AttendanceController extends Controller
     
     public function checkout(Request $request)
     {
+         //get user location
+          $user_ip = getenv('REMOTE_ADDR');
+          $geo = unserialize(file_get_contents("http://www.geoplugin.net/php.gp?ip=$user_ip"));
+          // $current_city = $geo["geoplugin_timezone"];
+          $latitude = $geo["geoplugin_latitude"];
+          $longitude = $geo["geoplugin_longitude"];
+          $location = $latitude.', '. $longitude;
+
         $client_id = $request->client;
         $employee_id = Auth::id();
         $carbon = now();
         $current_date_time = $carbon->toDateTimeString();
-        $check_in = Attendance::where('client_id',$client_id)->where('employee_id',$employee_id)->whereDate('created_at',\Carbon\Carbon::today())->update(['full_date'=>$current_date_time, 'check_out'=>$current_date_time]);
+        $check_in = Attendance::where('client_id',$client_id)->where('employee_id',$employee_id)->whereDate('created_at',\Carbon\Carbon::today())->update(['full_date'=>$current_date_time, 'check_out'=>$current_date_time, 'check_out_location'=>$location]);
 
         //check total hours difference in the roster table
         $current_date_time = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $current_date_time)->format('Y-m-d');

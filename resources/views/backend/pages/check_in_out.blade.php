@@ -40,7 +40,7 @@
                     OUT
                   </a>
                 </div>
-                
+
                 <video id="video" width="640" height="480" autoplay></video>
                 <button id="snap" onclick="event.preventDefault();">Snap Photo</button>
                 <canvas id="canvas" width="640" height="480"></canvas>
@@ -69,6 +69,8 @@
             $('form').attr('action',action);
             $('form').submit();
         }
+
+        $('.select2').select2();
       
         // Grab elements, create settings, etc.
         var video = document.getElementById('video');
@@ -93,5 +95,5 @@
         	context.drawImage(video, 0, 0, 640, 480);
         });
 
-  </script>
+    </script>
 @endpush

@@ -15,7 +15,22 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
 
-         
+          <script>
+            var x = document.getElementById("demo");
+
+            // function getLocation() {
+              if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+              } else { 
+                x.innerHTML = "Geolocation is not supported by this browser.";
+              }
+            // }
+
+            function showPosition(position) {
+              x.innerHTML = "Latitude: " + position.coords.latitude + 
+              "<br>Longitude: " + position.coords.longitude;
+            }
+          </script>
 
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
