@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-// use App\Client;
+use DB;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Roster;
 use App\Attendance;
 use Illuminate\Validation\Rule;
 
@@ -126,9 +127,29 @@ class AttendanceController extends Controller
         $employee_id = Auth::id();
         $carbon = now();
         $current_date_time = $carbon->toDateTimeString();
-        $check_in = Attendance::where('client_id',$client_id)->where('employee_id',$employee_id)->whereDate('created_at',\Carbon\Carbon::today())->update(['check_out'=>$current_date_time]);
-        // print_r($employee_id);
-        
+        $check_in = Attendance::where('client_id',$client_id)->where('employee_id',$employee_id)->whereDate('created_at',\Carbon\Carbon::today())->update(['full_date'=>$current_date_time, 'check_out'=>$current_date_time]);
+
+        //check total hours difference in the roster table
+        $current_date_time = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $current_date_time)->format('Y-m-d');
+        $roster_lists     = DB::table('rosters')->where('client_id', '=', $client_id)->where('employee_id', '=', $employee_id)->where('full_date', '=', $current_date_time)->get();
+        $roster_lists = json_decode($roster_lists, true);
+        $diff_hour1 = $roster_lists[0]['total_hours'];
+
+        //check total hours difference in the attendance table
+        $attendance_lists = DB::table('attendances')->where('attendances.client_id', '=', $client_id)->where('attendances.employee_id', '=', $employee_id)->where('attendances.full_date', '=', $current_date_time)->get();
+        $attendance_lists = json_decode($attendance_lists, true);
+        $check_in  = $attendance_lists[0]['check_in'];
+        $check_out = $attendance_lists[0]['check_out'];
+        $diff_hour2 = round(abs(strtotime($check_in) - strtotime($check_out)) / 3600);
+
+        if($diff_hour1 == $diff_hour2){
+            $status = 1;
+        }else{
+            $status = 2;
+        }
+
+        $check_in = Attendance::where('client_id',$client_id)->where('employee_id',$employee_id)->whereDate('created_at',\Carbon\Carbon::today())->update(['status'=>$status]);
+
         return redirect()->back()->with('message', 'Client Logged Out Successfully');
     }
 

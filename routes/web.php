@@ -42,5 +42,7 @@ Route::middleware(['auth'])->group(function () {
 		Route::get('/roster','RosterController@index')->name('roster.index');
 		Route::post('/add_roster','RosterController@store')->name('roster.store');
 		Route::get('/roster-variation','RosterVariationController@index')->name('roster_variation.index');
+		Route::post('/roster-variation/accept/{id}','RosterVariationController@statusAccept')->name('roster_variation.approve_status');
+		Route::post('/roster-variation/decline/{id}','RosterVariationController@statusDecline')->name('roster_variation.decline_status');
 	});
 });

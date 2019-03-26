@@ -19,7 +19,7 @@ class RosterVariationController extends Controller
     {
         $user_lists   = User::all();
         $roster_lists = Roster::all();
-        $variations   = DB::table('attendances')->where('attendances.status', '=', 2)->get();
+        $variations   = DB::table('attendances')->orWhere('attendances.status', '=', 2)->orWhere('attendances.status', '=', 3)->get();
         return view('backend.pages.roster_variation',compact('variations', 'roster_lists', 'user_lists'));
     }
 
@@ -88,4 +88,19 @@ class RosterVariationController extends Controller
     {
         //
     }
+
+    public function statusAccept(Request $request, $id)
+    {
+        $attendance = Attendance::find($id);
+        $active_status = Attendance::where('id',$id)->update(['status'=>1]);
+        return redirect()->back()->with('message', 'Variation Approved');
+    }
+
+    public function statusDecline(Request $request, $id)
+    {
+        $attendance = Attendance::find($id);
+        $active_status = Attendance::where('id',$id)->update(['status'=>3]);
+        return redirect()->back()->with('message', 'Variation Decline');
+    }
+    
 }

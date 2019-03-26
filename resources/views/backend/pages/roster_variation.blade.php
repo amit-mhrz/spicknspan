@@ -105,10 +105,22 @@
                             </div>
                         </td>
                         <td>
+                          <?php if($variation->status == '2'){ ?>
                             <div class="action">
-                                <button type="button" class="btn btn-info">Approve</button>
-                                <button type="button" class="btn btn-warning">Decline</button>
+                                <form action="{{ url('/roster-variation/accept/').'/'.$variation->id}}" method="POST">
+                                  {{ csrf_field() }}
+                                  <input type="hidden" name="_method" value="POST">
+                                  <button  class="btn btn-info">Approve</button>
+                                </form>
+                                <form action="{{ url('/roster-variation/decline/').'/'.$variation->id}}" method="POST">
+                                  {{ csrf_field() }}
+                                  <input type="hidden" name="_method" value="POST">
+                                  <button class="btn btn-warning">Decline</button>
+                                </form>
                             </div>
+                          <?php } else { ?>
+                            <div class="declined_message">Variation Declined</div>
+                          <?php } ?>
                         </td>
                     
                 </tr>
