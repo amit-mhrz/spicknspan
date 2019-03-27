@@ -25,6 +25,8 @@
           <div class="col-md-12">
             <div class="box box-success">
               <div class="box-body check_in_body">
+                <input type="hidden" name="latitude" id="latitude">
+                <input type="hidden" name="longitude" id="longitude">
                 <select class="select2" name="client">
                   @foreach($clients as $client)
                     <option value="{{$client->id}}">{{$client->name}}</option>
@@ -59,13 +61,37 @@
 @endsection
 @push('scripts')
   <script type="text/javascript">
+
         function checkin(){
-            var action = "{{route('attendance.checkin')}}";
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(showPosition);
+            } else { 
+              x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+        function showPosition(position) {
+          var latitude = position.coords.latitude;
+          var longitude = position.coords.longitude;
+          var action = "{{route('attendance.checkin')}}";
+            $('#latitude').val(latitude);
+            $('#longitude').val(longitude);
             $('form').attr('action',action);
             $('form').submit();
         }
+
         function checkout(){
-            var action = "{{route('attendance.checkout')}}";
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(showPosition1);
+            } else { 
+              x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+        function showPosition1(position) {
+          var latitude = position.coords.latitude;
+          var longitude = position.coords.longitude;
+          var action = "{{route('attendance.checkout')}}";
+            $('#latitude').val(latitude);
+            $('#longitude').val(longitude);
             $('form').attr('action',action);
             $('form').submit();
         }

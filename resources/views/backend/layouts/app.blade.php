@@ -135,6 +135,7 @@
   });
 
 </script>
+
 <!-- Bootstrap 3.3.7 -->
 <script src="{{ asset('backend/js/bootstrap.min.js') }}"></script>
 <!-- AdminLTE App -->

@@ -15,23 +15,6 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
 
-          <?php //$GLOBALS['lat']; ?>
-
-          <script>
-            var x = document.getElementById("demo");
-
-              if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
-              } else { 
-                x.innerHTML = "Geolocation is not supported by this browser.";
-              }
-
-            function showPosition(position) {
-              alert(position.coords.latitude);
-              alert(position.coords.longitude);
-            }
-          </script>
-
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">

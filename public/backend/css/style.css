@@ -37,6 +37,6 @@ span.select2.select2-container.select2-container--default.select2-container--bel
 div#tblRosterVariation_wrapper {
     padding: 12px;
 }
-div#mapid {
+div#mapid, div#mapid2 {
     height: 300px;
 }

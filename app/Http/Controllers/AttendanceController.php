@@ -94,26 +94,35 @@ class AttendanceController extends Controller
 
     public function list()
     {
-        // $attendance_lists = Attendance::select('attendances.id','clients.name','attendances.check_in','attendances.check_out','attendances.created_at')->join('clients','attendances.client_id','=','clients.id')->get();
+        $employee_id = Auth::id();
+
+        if(Auth::check() && Auth::user()->user_type == "admin")
+            $attendance_lists = Attendance::all();
+        else
+            $attendance_lists = Attendance::all()->where('employee_id',$employee_id);
+
+        
         $user_lists = User::all();
-        $attendance_lists = Attendance::all();
         return view('backend.pages.attendance_list',compact('attendance_lists', 'user_lists'));
     }
 
     public function checkin(Request $request)
     {
-          //get user location
-          $user_ip = getenv('REMOTE_ADDR');
-          $geo = unserialize(file_get_contents("http://www.geoplugin.net/php.gp?ip=$user_ip"));
-          // $current_city = $geo["geoplugin_timezone"];
-          $latitude = $geo["geoplugin_latitude"];
-          $longitude = $geo["geoplugin_longitude"];
-          $location = $latitude.', '. $longitude;
+        if(isset($_POST['latitude']))
+            { $latitude = $_POST['latitude']; }
+        else { $latitude = 0; }
+
+        if(isset($_POST['longitude']))
+            { $longitude = $_POST['longitude']; }
+        else { $longitude = 0; }
+
+        $location = $latitude.', '. $longitude;
 
         $client_id = $request->client;
         $employee_id = Auth::id();
+
         //Check if already Logged In
-        $attendance_check = Attendance::where('employee_id',$employee_id)->whereDate('created_at',\Carbon\Carbon::today());
+        $attendance_check = Attendance::where('client_id',$client_id)->whereDate('created_at',\Carbon\Carbon::today());
         if(!$attendance_check->exists()){
             $carbon = now();
             $current_date_time = $carbon->toDateTimeString();
@@ -132,13 +141,15 @@ class AttendanceController extends Controller
     
     public function checkout(Request $request)
     {
-         //get user location
-          $user_ip = getenv('REMOTE_ADDR');
-          $geo = unserialize(file_get_contents("http://www.geoplugin.net/php.gp?ip=$user_ip"));
-          // $current_city = $geo["geoplugin_timezone"];
-          $latitude = $geo["geoplugin_latitude"];
-          $longitude = $geo["geoplugin_longitude"];
-          $location = $latitude.', '. $longitude;
+        if(isset($_POST['latitude']))
+            { $latitude = $_POST['latitude']; }
+        else { $latitude = 0; }
+
+        if(isset($_POST['longitude']))
+            { $longitude = $_POST['longitude']; }
+        else { $longitude = 0; }
+
+        $location = $latitude.', '. $longitude;
 
         $client_id = $request->client;
         $employee_id = Auth::id();
@@ -170,4 +181,10 @@ class AttendanceController extends Controller
         return redirect()->back()->with('message', 'Client Logged Out Successfully');
     }
 
+    public function details(Request $request, $id)
+    {
+        $att_details = Attendance::findOrFail($id);
+        $att_details = json_decode($att_details, true);
+        return view('backend.pages.attendance_details', compact('att_details'));
+    }
 }
