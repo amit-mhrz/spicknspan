@@ -20,7 +20,7 @@ class CreateRosterTable extends Migration
             $table->date('full_date')->nullable();
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
-            $table->time('total_hours')->nullable();
+            $table->integer('total_hours')->nullable();
             $table->timestamps();
         });
     }

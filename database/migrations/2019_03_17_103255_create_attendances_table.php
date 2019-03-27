@@ -17,12 +17,12 @@ class CreateAttendancesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('client_id');
             $table->integer('employee_id');
+            $table->date('full_date')->nullable();
             $table->dateTime('check_in');
-            $table->text('check_in_location')->nullable();
-            
+            $table->text('check_in_location')->nullable();            
             $table->dateTime('check_out')->nullable();
             $table->text('check_out_location')->nullable();
-            $table->dateTime('status')->nullable();
+            $table->integer('status')->nullable();
             $table->timestamps();
         });
     }

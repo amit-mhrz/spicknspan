@@ -46,9 +46,19 @@
                     @endforeach
                     <td>
                         <button id="find_btn">Location</button>
+                        <?php
+                            list($latitude, $longitude) = explode(",", $attendance_list->check_in_location);
+                            echo $latitude."<br>";
+                            echo $longitude."<br>";
+                        ?>
                     </td>
                     <td>
                         <button id="find_btn">Location</button>
+                        <?php
+                            list($latitude, $longitude) = explode(",", $attendance_list->check_in_location);
+                            echo $latitude."<br>";
+                            echo $longitude."<br>";
+                        ?>
                     </td>
                     <td>{{$hours}} Hours</td>
                     <td>{{$check_in->format('H:i:s')}} - {{$check_out->format('H:i:s')}}</td>
@@ -72,10 +82,6 @@
               <h3 class="box-title">Location History</h3>
                 <div class="box-body table-responsive no-padding new_padding">
                   <div id="mapid"></div>
-                  <?php
-                      $map_lat = $attendance_list->latitude;
-                      $map_long = $attendance_list->longitude;
-                      ?>
                 </div>
             </div>
           </div>
@@ -102,7 +108,7 @@
   <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script>
   <script type="text/javascript">
 
-      var geoCoords = '[' + <?php echo $map_lat;?> + ', ' + <?php echo $map_long;?> + ']';
+      var geoCoords = '[' + <?php echo $latitude;?> + ', ' + <?php echo $longitude;?> + ']';
       var map = L.map('mapid', {
       center: JSON.parse(geoCoords),
       zoom: 14
@@ -120,32 +126,3 @@
 
   </script>
 @endpush
-     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
